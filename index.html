@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>
+          WMMT6RR Frame Viewer
+      </title>
+
+      <!-- Bootstrap Stylesheet -->
+      <link rel='stylesheet' href='redist/bootstrap.min.css'>
+  </head>
+  <body class='text-light bg-dark'>
+    <!-- Container keeping page the correct width -->
+    <div class='container' style='width: 100%; max-width: 960px;'>
+      <div id='d_header' class='text-center' style='background-image:url(img/cover.png); background-position:center; border-radius:0px 0px 10px 10px;'>
+        <div style='background-color:rgba(0,0,0,0.7); padding-top:20px; padding-bottom:20px; border-radius:0px 0px 10px 10px;'>
+          <h1>
+            <!-- Wangan Midnight Maximum Tune 6 Car Editor -->
+            Maximum Tune 6RR Frame Viewer
+          </h1>
+          <h3>
+            Frame on given date / Date for given frame finder
+          </h3>
+          <h5>
+            Created by 
+            <a href='https://www.twitter.com/SirScrubbington'>
+              SirScrubbington
+            </a>
+          </h5>
+          <h6>
+            Report a bug:
+            <a href='https://www.github.com/damon-murdoch/wmmt-file-editor/issues'>
+              Link
+            </a>
+          </h6>
+        </div>
+      </div>
+      <div id='d_body'>
+        <table class="table text-light table-dark">
+          <thead>
+            <tr>
+              <th>
+                Lookup by Frame
+              </th>
+              <th colspan=2>
+                Lookup by Date
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <input type="text" class="form-control form-control-sm mb-2" name="frame-lookup" id="frame-lookup">
+                <button class="btn btn-sm btn-success" id="frame-button" onClick="getDatesFromFrame()">
+                  Search!
+                </button>
+              </td>
+              <td>
+                <input type="date" class="form-control form-control-sm mb-2" name="date-lookup" id="date-lookup">
+                <button class="btn btn-sm btn-success" id="date-button" onClick="getFramesFromDate()">
+                  Search!
+                </button>
+              </td>
+              <td>
+                <div>
+                  Show frames for the next
+                </div>
+                <div>
+                  <label for="get-daily">
+                    day
+                  </label>
+                  <input class="form-check-input" type="radio" name="date-radio" id="get-daily" value="get-daily" checked>
+  
+                  <label for="get-weekly">
+                    week
+                  </label>
+                  <input class="form-check-input" type="radio" name="date-radio" id="get-weekly" value="get-weekly">
+  
+                  <label for="get-monthly">
+                    month
+                  </label>
+                  <input class="form-check-input" type="radio" name="date-radio" id="get-monthly" value="get-monthly">
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <table id="bingo-table" class="table text-light table-dark text-center">
+            <thead>
+              <th>
+                Frame Name
+              </th>
+              <th>
+                Frame Appearance
+              </th>
+              <th>
+                Frame Dates
+              </th>
+            </thead>
+            <tbody id="bingo-frames">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="script">
+      <!-- Frames Data File -->
+      <script src="data/frames.js" type="text/javascript">
+      </script>
+
+      <!-- Main Program Source File -->
+      <script src="index.js" type="text/javascript">
+      </script>
+    </div>
+  </body>
+</html>
