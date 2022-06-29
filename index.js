@@ -124,14 +124,18 @@ function getFramesFromDate(date = null)
     // Increment the count offset onto the current date
     currentDate.setDate(date.getDate() + i);
 
+    // Get the frame for the given date
+    let frame = getFrameAt(currentDate.getFullYear(), getDayOfYear(currentDate))
+    
+    // If we are looking at the first element
+    if (i==0)
+    {
+      // Set the placeholder text for the search bar to today's frame
+      document.getElementById('frame-lookup').placeholder = frame;
+    }
+
     // Show the bingo frame for the given date
-    showBingoFrame(
-      getFrameAt(
-        currentDate.getFullYear(), 
-        getDayOfYear(currentDate)
-      ), 
-      [currentDate]
-    );
+    showBingoFrame(frame, [currentDate]);
   }
 }
 
@@ -366,5 +370,5 @@ function clearBingoFrameList()
 // Automatically check the single day box
 document.getElementById('get-daily').checked = true;
 
-// Startup code
+// Populate by default with today's frame
 getFramesFromDate(new Date());
