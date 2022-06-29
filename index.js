@@ -190,7 +190,10 @@ function getDatesFromFrame(frame = null)
   }
 
   // Get the list of frames found
-  let frame_keys = Object.keys(frames_matched).sort();
+  let frame_keys = Object.keys(frames_matched).sort(function(a,b){
+    // Sort the frames by earliest first date to latest first date
+    return frames_matched[a][0].getTime() > frames_matched[b][0].getTime();
+  });
 
   // If there is at LEAST one frame returned from the query
   if (frame_keys.length > 0)
@@ -208,6 +211,55 @@ function getDatesFromFrame(frame = null)
       showBingoFrame(frame_name, frame_dates);
     }
   }
+}
+
+// getGoogleCalendarLink(name: String, date: Date): String
+// Given the name of a frame and a date, returns the link
+// to a google calendar object for the given frame.
+function getGoogleCalendarLink(name, date)
+{
+  /*
+    <a href="http://www.google.com/calendar/event?
+      action=TEMPLATE&
+      text=Example%20Event&
+      dates=20131124T010000Z/20131124T020000Z&
+      details=Event%20Details%20Here&
+      location=123%20Main%20St%2C%20Example%2C%20NY">
+      Add to gCal
+    </a>
+  */
+
+  // Get the date of the next day
+  let nextDate = new Date(date);
+  nextDate.setDate(date.getDate() + 1);
+
+  // Generate the date format for the event
+  function getGoogleCalendarDate(date)
+  {
+    return date.getFullYear().toString() + 
+
+      // Current Day (Start Time)
+      (date.getMonth() + 1).toString().padStart(2, '0') + 
+      (date.getDate()).toString().padStart(2, '0') + '/' + 
+
+      // Next Day (End Time)
+      nextDate.getFullYear().toString() + 
+      (nextDate.getMonth() + 1).toString().padStart(2, '0') + 
+      (nextDate.getDate()).toString().padStart(2, '0');
+  }
+
+  // Get the link to the google calendar url
+  let url = new URL("https://calendar.google.com/calendar/r/eventedit");
+
+  // Add the parameters to the url
+  // url.searchParams.set('action', 'template');
+  url.searchParams.set('dates', getGoogleCalendarDate(date));
+  url.searchParams.set('text', 'Bingo Today: ' + name);
+  url.searchParams.set('details', 'For more information, please visit <a href="https://www.dragapult.xyz/wmmt-frame-viewer">https://www.dragapult.xyz/wmmt-frame-viewer</a>');
+  url.searchParams.set('location', 'Maximum Tune 6RR');
+
+  // Return the url object
+  return url;
 }
 
 // showBingoFrame(date: Date, frame: String)
@@ -271,6 +323,24 @@ function showBingoFrame(name, dates)
 
         // Add the text to the frame
         col_dates.appendChild(date_div);
+
+        { // Google calendar link subsection
+          
+          // Create the link property
+          let date_link = document.createElement('a');
+
+          // Get the google calendar link for the name/date
+          date_link.href = getGoogleCalendarLink(name, date);
+
+          // Ensure that the link opens in a new tab
+          date_link.target = '_blank';
+
+          // Set the content for the message
+          date_link.innerHTML = "Add to calendar";
+
+          // Add the link to the frame
+          col_dates.appendChild(date_link);
+        }
       }
 
       // Add the dates column to the row
